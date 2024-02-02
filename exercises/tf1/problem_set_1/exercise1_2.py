@@ -84,16 +84,13 @@ def mlp_gaussian_policy(x, a, hidden_sizes, activation, output_activation, actio
     #   YOUR CODE HERE    #
     #                     #
     #######################
-    act_dim = a.shapr.as_list()[-1]
-    mu = mlp(x,list(hidden_sizes) + [act_dim], activation, output_activation)
-    log_std = tf.get_variable(name = 'log_std', initializer = -0.5*np.ones(act_dim, dtype=np.float32))
+    act_dim = a.shape.as_list()[-1]
+    mu = mlp(x, list(hidden_sizes)+[act_dim], activation, output_activation)
+    log_std = tf.get_variable(name='log_std', initializer=-0.5*np.ones(act_dim, dtype=np.float32))
     std = tf.exp(log_std)
-    pi= mu + tf.random_normaal(tf.shape(mu))*std
-    logp = gaussian_likelihood(a,mu,log_std)
-    logp_pi = gaussian_likelihood(pi,mu,log_std)
-
-    logp = exercise1_1.gaussian_likelihood(a, mu, log_std)
-    logp_pi = exercise1_1.gaussian_likelihood(pi, mu, log_std)
+    pi = mu + tf.random_normal(tf.shape(mu)) * std
+    logp = gaussian_likelihood(a, mu, log_std)
+    logp_pi = gaussian_likelihood(pi, mu, log_std)
     return pi, logp, logp_pi
 
 
